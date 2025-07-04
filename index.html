@@ -15,6 +15,9 @@
             background-color: #1a1a1a;
             color: #f5f5dc;
         }
+        body.modal-open {
+            overflow: hidden;
+        }
         #particles-js {
             position: fixed;
             width: 100%;
@@ -37,15 +40,14 @@
             transform: translateY(20px);
             animation: fadeIn 0.8s forwards;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            position: relative; /* Needed for pseudo-element */
-            overflow: hidden; /* Needed for pseudo-element */
+            position: relative;
+            overflow: hidden;
         }
         .animated-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
             border-color: #d2b48c;
         }
-        /* Shimmer effect on hover */
         .animated-card::before {
             content: '';
             position: absolute;
@@ -59,7 +61,6 @@
         .animated-card:hover::before {
             left: 100%;
         }
-        /* Staggered animation delays */
         main > .animated-card:nth-of-type(1) { animation-delay: 0.2s; }
         main > .animated-card:nth-of-type(2) { animation-delay: 0.4s; }
         main > .animated-card:nth-of-type(3) { animation-delay: 0.6s; }
@@ -67,88 +68,89 @@
         main > .animated-card:nth-of-type(5) { animation-delay: 1.0s; }
         main > .animated-card:nth-of-type(6) { animation-delay: 1.2s; }
 
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .header-pulse {
-            animation: pulse 2s infinite ease-in-out;
-        }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+        
+        .header-pulse { animation: pulse 2s infinite ease-in-out; }
         @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                text-shadow: 0 0 5px #f5f5dc;
-            }
-            50% {
-                transform: scale(1.02);
-                text-shadow: 0 0 15px #f5f5dc;
-            }
+            0%, 100% { transform: scale(1); text-shadow: 0 0 5px #f5f5dc; }
+            50% { transform: scale(1.02); text-shadow: 0 0 15px #f5f5dc; }
         }
-        .icon {
-            font-size: 1.5rem;
-            margin-right: 0.75rem;
-            color: #d2b48c; /* Tan/Cappuccino accent */
-        }
-        .highlight {
-            color: #d2b48c;
-            font-weight: 600;
-        }
-        .link {
-            color: #d2b48c;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
-        }
-        .link:hover {
-            color: #fff;
-            text-shadow: 0 0 8px #d2b48c;
-        }
-        blockquote {
-            border-left: 4px solid #d2b48c;
-            padding-left: 1rem;
-            margin: 1rem 0;
-            font-style: italic;
-            color: #ccc;
-        }
+        
+        .icon { font-size: 1.5rem; margin-right: 0.75rem; color: #d2b48c; }
+        .highlight { color: #d2b48c; font-weight: 600; }
+        .link { color: #d2b48c; transition: color 0.3s ease, text-shadow 0.3s ease; }
+        .link:hover { color: #fff; text-shadow: 0 0 8px #d2b48c; }
+        blockquote { border-left: 4px solid #d2b48c; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #ccc; }
 
-        /* Flip Card Styles */
-        .flip-card-container {
-            perspective: 1000px;
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
+        .modal-container {
+            background-color: #2c2c2c;
+            border-radius: 0.75rem;
+            border: 1px solid #444;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+            overflow: hidden;
         }
-        .flip-card-container:hover .flip-card-inner {
-            transform: rotateY(180deg);
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #444;
         }
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden; /* Safari */
-            backface-visibility: hidden;
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .modal-close-btn:hover { color: #ffffff; }
+        
+        .insight-trigger-card {
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 0.75rem;
+            height: 12rem; /* 192px */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
             padding: 1rem;
-            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        .flip-card-front {
-            background-color: #2c2c2c;
-            border: 1px solid #444;
-        }
-        .flip-card-back {
-            background-color: #3a3a3a;
-            border: 1px solid #555;
-            transform: rotateY(180deg);
-            color: #f5f5dc;
+        .insight-trigger-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: #d2b48c;
         }
     </style>
 </head>
@@ -174,22 +176,10 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-4 w-full text-center">
-                        <div>
-                            <p class="text-sm text-gray-400">Total Karma</p>
-                            <p class="text-2xl font-bold highlight">2,845</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400">Post Karma</p>
-                            <p class="text-2xl font-bold highlight">1,102</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400">Comment Karma</p>
-                            <p class="text-2xl font-bold highlight">1,743</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400">Cake Day</p>
-                            <p class="text-2xl font-bold highlight">Oct 2, 2023</p>
-                        </div>
+                        <div><p class="text-sm text-gray-400">Total Karma</p><p class="text-2xl font-bold highlight">2,845</p></div>
+                        <div><p class="text-sm text-gray-400">Post Karma</p><p class="text-2xl font-bold highlight">1,102</p></div>
+                        <div><p class="text-sm text-gray-400">Comment Karma</p><p class="text-2xl font-bold highlight">1,743</p></div>
+                        <div><p class="text-sm text-gray-400">Cake Day</p><p class="text-2xl font-bold highlight">Oct 2, 2023</p></div>
                     </div>
                 </div>
             </section>
@@ -197,42 +187,24 @@
             <!-- Account Age & Activity Summary -->
             <section class="animated-card">
                 <h2 class="text-2xl font-bold mb-4 flex items-center"><span class="icon">🕰️</span> Account Age & Activity Summary</h2>
-                <p class="text-gray-300">
-                    The earliest post found dates back approximately <span class="highlight">9–10 months ago</span> on <span class="highlight">r/SaaS</span>. Subsequent activity shows consistent engagement, helping users with <span class="highlight">n8n automation</span> and <span class="highlight">VPS use cases</span>.
-                </p>
+                <p class="text-gray-300">The earliest post found dates back approximately <span class="highlight">9–10 months ago</span> on <span class="highlight">r/SaaS</span>. Subsequent activity shows consistent engagement, helping users with <span class="highlight">n8n automation</span> and <span class="highlight">VPS use cases</span>.</p>
             </section>
 
-            <!-- Key Insights Flip Cards -->
+            <!-- Key Insights Modals -->
             <section class="animated-card">
-                 <h2 class="text-2xl font-bold mb-4 flex items-center"><span class="icon">🎯</span> Key Insights for Recruiters</h2>
+                <h2 class="text-2xl font-bold mb-4 flex items-center"><span class="icon">🎯</span> Key Insights for Recruiters</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Flip Card 1: Core Expertise -->
-                    <div class="flip-card-container h-48">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front"><h3 class="text-xl font-bold text-[#d2b48c]">Core Expertise</h3><p class="text-sm text-gray-400 mt-2">(Hover to reveal)</p></div>
-                            <div class="flip-card-back"><p>Specializes in <span class="highlight">Automation & Workflow Orchestration</span>, particularly with n8n. Demonstrates practical problem-solving for real-world business challenges.</p></div>
-                        </div>
+                    <div class="insight-trigger-card" data-modal-target="modal-expertise">
+                        <h3 class="text-xl font-bold text-[#d2b48c]">Core Expertise</h3><p class="text-sm text-gray-400 mt-2">(Click to expand)</p>
                     </div>
-                    <!-- Flip Card 2: Business Acumen -->
-                    <div class="flip-card-container h-48">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front"><h3 class="text-xl font-bold text-[#d2b48c]">Business Acumen</h3><p class="text-sm text-gray-400 mt-2">(Hover to reveal)</p></div>
-                            <div class="flip-card-back"><p>Advises on <span class="highlight">SaaS strategy</span> and lean go-to-market approaches. Understands the link between technical solutions and business value.</p></div>
-                        </div>
+                    <div class="insight-trigger-card" data-modal-target="modal-acumen">
+                        <h3 class="text-xl font-bold text-[#d2b48c]">Business Acumen</h3><p class="text-sm text-gray-400 mt-2">(Click to expand)</p>
                     </div>
-                    <!-- Flip Card 3: Leadership Potential -->
-                    <div class="flip-card-container h-48">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front"><h3 class="text-xl font-bold text-[#d2b48c]">Leadership Potential</h3><p class="text-sm text-gray-400 mt-2">(Hover to reveal)</p></div>
-                            <div class="flip-card-back"><p>Acts as a <span class="highlight">peer-educator</span> by launching newsletters and building community. Shows initiative beyond individual tasks.</p></div>
-                        </div>
+                    <div class="insight-trigger-card" data-modal-target="modal-leadership">
+                        <h3 class="text-xl font-bold text-[#d2b48c]">Leadership Potential</h3><p class="text-sm text-gray-400 mt-2">(Click to expand)</p>
                     </div>
-                    <!-- Flip Card 4: Communication Style -->
-                    <div class="flip-card-container h-48">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front"><h3 class="text-xl font-bold text-[#d2b48c]">Communication</h3><p class="text-sm text-gray-400 mt-2">(Hover to reveal)</p></div>
-                            <div class="flip-card-back"><p>Employs a <span class="highlight">mindset-first</span>, solution-driven, and encouraging tone. Ideal for collaborative, team-oriented environments.</p></div>
-                        </div>
+                    <div class="insight-trigger-card" data-modal-target="modal-communication">
+                        <h3 class="text-xl font-bold text-[#d2b48c]">Communication</h3><p class="text-sm text-gray-400 mt-2">(Click to expand)</p>
                     </div>
                 </div>
             </section>
@@ -243,46 +215,93 @@
                 <div class="overflow-x-auto"><table class="w-full text-left table-auto"><thead class="bg-gray-800 text-[#d2b48c]"><tr><th class="px-4 py-2 rounded-tl-lg">Attribute</th><th class="px-4 py-2 rounded-tr-lg">Insight</th></tr></thead><tbody class="divide-y divide-gray-700"><tr class="bg-gray-800/50"><td class="px-4 py-3 font-medium">Interests / Expertise</td><td class="px-4 py-3">Workflow automation (n8n), SaaS, business strategy</td></tr><tr><td class="px-4 py-3 font-medium">Style</td><td class="px-4 py-3">Collaborative, advising, encouraging, community-oriented</td></tr><tr class="bg-gray-800/50"><td class="px-4 py-3 font-medium rounded-bl-lg">Notable Initiatives</td><td class="px-4 py-3 rounded-br-lg">Proposed newsletter, responsible community engagement</td></tr></tbody></table></div>
             </section>
 
-            <!-- Reddit Voice Examples -->
-            <section class="animated-card">
-                <h2 class="text-2xl font-bold mb-4 flex items-center"><span class="icon">🎤</span> Reddit Voice Examples</h2>
-                <blockquote>“Automation isn’t just about workflows, it’s about solving real business problems.”</blockquote>
-                <blockquote>“start with challenge/outcome… learning to share who you are as well and not be another bot in the industry of… 'Life.'”</blockquote>
-            </section>
-
-            <!-- Final Thoughts -->
-            <section class="animated-card">
-                <h2 class="text-2xl font-bold mb-4 flex items-center"><span class="icon">✅</span> Final Thoughts</h2>
-                <p class="text-gray-300">RyudSwift appears to be a <span class="highlight">mid-level automation specialist</span> who blends technical workflow expertise with pragmatic business advice. They position themselves as a <span class="highlight">peer-educator</span>, encouraging others to grow while building visibility through community initiatives.</p>
-            </section>
+            <!-- Reddit Voice Examples & Final Thoughts -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <section class="animated-card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><span class="icon">🎤</span> Reddit Voice Examples</h2>
+                    <blockquote>“Automation isn’t just about workflows, it’s about solving real business problems.”</blockquote>
+                    <blockquote>“start with challenge/outcome… learning to share who you are as well and not be another bot in the industry of… 'Life.'”</blockquote>
+                </section>
+                <section class="animated-card">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center"><span class="icon">✅</span> Final Thoughts</h2>
+                    <p class="text-gray-300">RyudSwift appears to be a <span class="highlight">mid-level automation specialist</span> who blends technical workflow expertise with pragmatic business advice. They position themselves as a <span class="highlight">peer-educator</span>, encouraging others to grow while building visibility through community initiatives.</p>
+                </section>
+            </div>
         </main>
 
         <footer class="text-center mt-12 text-gray-500 text-sm">
             <p>This report was generated automatically based on public Reddit data.</p>
-            <p>&copy; 2024 Reddit Legacy Project. Created by 
-                <a href="https://github.com/ryudswift" target="_blank" rel="noopener noreferrer" class="link">RyudSwift</a>.
-            </p>
+            <p>&copy; 2024 Reddit Legacy Project. Created by <a href="https://github.com/ryudswift" target="_blank" rel="noopener noreferrer" class="link">RyudSwift</a>.</p>
         </footer>
     </div>
 
+    <!-- Modals HTML -->
+    <div id="modal-expertise" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3 class="text-white font-semibold text-xl">Core Expertise</h3><button class="modal-close-btn">&times;</button></div><div class="modal-body"><img src="https://placehold.co/700x400/2c2c2c/f5f5dc?text=Core+Expertise" alt="Core Expertise Placeholder" class="w-full h-auto rounded-md mb-4"><p>Specializes in <span class="highlight">Automation & Workflow Orchestration</span>, particularly with n8n. Demonstrates practical problem-solving for real-world business challenges by offering specific guidance on workflows, self-hosting, and strategic tool navigation.</p></div></div></div>
+    <div id="modal-acumen" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3 class="text-white font-semibold text-xl">Business Acumen</h3><button class="modal-close-btn">&times;</button></div><div class="modal-body"><img src="https://placehold.co/700x400/2c2c2c/f5f5dc?text=Business+Acumen" alt="Business Acumen Placeholder" class="w-full h-auto rounded-md mb-4"><p>Advises on <span class="highlight">SaaS strategy</span> and lean go-to-market approaches. Understands the link between technical solutions and business value, highlighting the importance of solving real customer problems over purely technical achievements.</p></div></div></div>
+    <div id="modal-leadership" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3 class="text-white font-semibold text-xl">Leadership Potential</h3><button class="modal-close-btn">&times;</button></div><div class="modal-body"><img src="https://placehold.co/700x400/2c2c2c/f5f5dc?text=Leadership+Potential" alt="Leadership Potential Placeholder" class="w-full h-auto rounded-md mb-4"><p>Acts as a <span class="highlight">peer-educator</span> by launching initiatives like newsletters and building community. Shows initiative beyond individual tasks, recommending resources and fostering an environment of shared learning and growth.</p></div></div></div>
+    <div id="modal-communication" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3 class="text-white font-semibold text-xl">Communication Style</h3><button class="modal-close-btn">&times;</button></div><div class="modal-body"><img src="https://placehold.co/700x400/2c2c2c/f5f5dc?text=Communication+Style" alt="Communication Style Placeholder" class="w-full h-auto rounded-md mb-4"><p>Employs a <span class="highlight">mindset-first</span>, solution-driven, and encouraging tone. Ideal for collaborative, team-oriented environments, fostering discussion and mutual growth with a welcoming and pragmatic approach.</p></div></div></div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Particles.js setup
             particlesJS('particles-js', {
-                "particles": {
-                    "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
-                    "color": { "value": "#d2b48c" },
-                    "shape": { "type": "circle" },
-                    "opacity": { "value": 0.2, "random": true, "anim": { "enable": false } },
-                    "size": { "value": 3, "random": true },
-                    "line_linked": { "enable": true, "distance": 150, "color": "#444", "opacity": 0.3, "width": 1 },
-                    "move": { "enable": true, "speed": 1, "direction": "none", "out_mode": "out" }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": false }, "resize": true },
-                    "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } } }
-                },
+                "particles": { "number": { "value": 60, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#d2b48c" }, "shape": { "type": "circle" }, "opacity": { "value": 0.2, "random": true }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#444", "opacity": 0.3, "width": 1 }, "move": { "enable": true, "speed": 1, "direction": "none", "out_mode": "out" } },
+                "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": false }, "resize": true }, "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } } } },
                 "retina_detect": true
+            });
+
+            // Modal functionality
+            const openModalButtons = document.querySelectorAll('[data-modal-target]');
+            const closeModalButtons = document.querySelectorAll('.modal-close-btn');
+            const overlays = document.querySelectorAll('.modal-overlay');
+
+            const openModal = (modal) => {
+                if (modal == null) return;
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    document.body.classList.add('modal-open');
+                    modal.style.opacity = '1';
+                    modal.querySelector('.modal-container').style.transform = 'scale(1)';
+                }, 10);
+            };
+
+            const closeModal = (modal) => {
+                if (modal == null) return;
+                document.body.classList.remove('modal-open');
+                modal.style.opacity = '0';
+                modal.querySelector('.modal-container').style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            };
+
+            openModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = document.getElementById(button.dataset.modalTarget);
+                    openModal(modal);
+                });
+            });
+
+            overlays.forEach(overlay => {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        closeModal(overlay);
+                    }
+                });
+            });
+
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = button.closest('.modal-overlay');
+                    closeModal(modal);
+                });
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape") {
+                    document.querySelectorAll('.modal-overlay').forEach(closeModal);
+                }
             });
         });
     </script>
